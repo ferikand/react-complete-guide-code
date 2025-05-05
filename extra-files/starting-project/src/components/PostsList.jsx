@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import {v4 as uuidv4  }  from 'uuid'
 import Post from './Post'
 import NewPost from './NewPost'
 import classes from './PostsList.module.css'
@@ -22,15 +22,17 @@ function PostsList({ isPosting, onStopPosting }) {
 					/>
 				</Modal>
 			)}
-			<ul className={classes['posts']}>
-				{posts.map((post, index) => (
-					<Post
-						key={index}
-						author={post.author}
-						body={post.body}
-					/>
-				))}
-			</ul>
+			{posts.length > 0 && (
+				<ul className={classes['posts']}>
+					{posts.map((post) => (
+						<Post
+							key={uuidv4()}
+							author={post.author}
+							body={post.body}
+						/>
+					))}
+				</ul>
+			)}
 		</>
 	)
 }
