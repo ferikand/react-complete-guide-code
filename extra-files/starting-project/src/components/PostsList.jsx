@@ -1,19 +1,15 @@
 import { useState } from 'react'
+
 import Post from './Post'
 import NewPost from './NewPost'
 import classes from './PostsList.module.css'
 import Modal from './Modal'
 
 function PostsList({ isPosting, onStopPosting }) {
-	const [enteredBody, setEnteredBody] = useState('lorem ipsum')
-	const [enteredAuthor, setEnteredAuthor] = useState('Andrii')
+	const [posts, setPosts] = useState([])
 
-	function bodyChangeHandler(event) {
-		setEnteredBody(event.target.value)
-	}
-
-	function authorChangeHandler(event) {
-		setEnteredAuthor(event.target.value)
+	function addPostHandler(postData) {
+		setPosts((posts) => [postData, ...posts])
 	}
 
 	return (
@@ -21,21 +17,19 @@ function PostsList({ isPosting, onStopPosting }) {
 			{isPosting && (
 				<Modal onClose={onStopPosting}>
 					<NewPost
-						onBodyChange={bodyChangeHandler}
-						onAuthorChange={authorChangeHandler}
 						onCancel={onStopPosting}
+						onAddPost={addPostHandler}
 					/>
 				</Modal>
 			)}
 			<ul className={classes['posts']}>
-				<Post
-					author={enteredAuthor}
-					body={enteredBody}
-				/>
-				<Post
-					author='Maksim'
-					body='lorem ipsum'
-				/>
+				{posts.map((post, index) => (
+					<Post
+						key={index}
+						author={post.author}
+						body={post.body}
+					/>
+				))}
 			</ul>
 		</>
 	)
